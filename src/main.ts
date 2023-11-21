@@ -13,10 +13,12 @@ const corsOptions = {
 
 server.use(cors(corsOptions));
 server.use(express.json());
-server.use(express.urlencoded({extended: true}));
+server.use(express.urlencoded({ extended: true }));
 
 server.get('/', (request: Request, response: Response) => {
   response.send('Connected to XPG...');
 });
 
-server.listen(PORT, () => console.log(`Server is listening at http://${hostname}:${PORT}`))
+server.listen(PORT, () =>
+  console.log(`Server is listening at http://${hostname}:${PORT}`)
+);

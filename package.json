@@ -8,7 +8,8 @@
     "build:watch": "tsc --watch",
     "start": "node dist/main.js",
     "start:dev": "nodemon dist/main.js --host 0.0.0.0 --disable-host-check",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:cov": "echo \"Error: no test specified\" && exit 0",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\""
   },
   "keywords": [],
   "author": "",

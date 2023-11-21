@@ -8,7 +8,8 @@
     "build:watch": "tsc --watch",
     "start": "node dist/main.js",
     "start:dev": "nodemon dist/main.js --host 0.0.0.0 --disable-host-check",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:cov": "echo \"Error: no test specified\" && exit 0",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\""
   },
   "keywords": [],
   "author": "",
@@ -25,7 +26,10 @@
     "@typescript-eslint/eslint-plugin": "^6.12.0",
     "@typescript-eslint/parser": "^6.12.0",
     "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
     "nodemon": "^3.0.1",
+    "prettier": "3.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.2"
   }

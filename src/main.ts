@@ -33,7 +33,7 @@ server.use(errorRequestHandler);
 
 (async () => {
   try {
-    await db.sequelize.sync();
+    await db.sequelize.sync(); // connect to db
     server.listen(port, () => {
       console.log(
         `Database connected, server is listening at http://${hostname}:${port}`

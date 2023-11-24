@@ -9,12 +9,7 @@ const findAll = async (): Promise<AccountDTO[]> => {
 
   return await db
     .any(text)
-
-    .then((result: AccountDTO[]) => {
-      console.log(text, result);
-
-      return result;
-    })
+    .then((result: AccountDTO[]) => result)
     .catch((error: Error) => console.error(error));
 };
 
@@ -27,10 +22,7 @@ const findByEmail = async (
 
   return await db
     .one(text, values)
-    .then((result: AccountDTO) => {
-      console.log(text, result);
-      return result;
-    })
+    .then((result: AccountDTO) => result)
     .catch((error: Error) => console.error(error));
 };
 
@@ -40,14 +32,10 @@ const findByUsername = async (
 ): Promise<AccountDTO> => {
   const text = 'SELECT * FROM "' + tableName + '" WHERE USERNAME = $1;';
   const values = [username];
-  console.log({ text, values });
 
   return await db
     .one(text, values)
-    .then((result: AccountDTO) => {
-      console.log(text, result);
-      return result;
-    })
+    .then((result: AccountDTO) => result)
     .catch((error: Error) => console.error(error));
 };
 

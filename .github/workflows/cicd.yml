@@ -79,7 +79,7 @@ jobs:
           JWT_KEY: 'jwtKey'
         run: npm run test:cov
 
-      - name: Running ng lint
+      - name: Running lint
         run: npm run lint
 
   docker:

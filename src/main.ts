@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-import { connection } from './app/db/config';
 import { initializeDB } from './app/db';
 import { account } from './app/routes/account.route';
 

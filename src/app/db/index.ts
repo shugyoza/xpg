@@ -1,6 +1,7 @@
 import { connection } from './config';
 
 const initializationOptions = {};
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pgp = require('pg-promise')(initializationOptions);
 
 export const initializeDB = () => {

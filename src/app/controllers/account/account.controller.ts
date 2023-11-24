@@ -9,6 +9,7 @@ export const findAccount = async (
   next: NextFunction
 ): Promise<void> => {
   const { login } = request.body;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let result: any;
 
   if (!login) {

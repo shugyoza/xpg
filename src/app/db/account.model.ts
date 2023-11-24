@@ -9,7 +9,8 @@ const findAll = async (): Promise<AccountDTO[]> => {
 
   return await db
     .any(text)
-    .then((result: any) => {
+
+    .then((result: AccountDTO[]) => {
       console.log(text, result);
 
       return result;
@@ -26,7 +27,7 @@ const findByEmail = async (
 
   return await db
     .one(text, values)
-    .then((result: any) => {
+    .then((result: AccountDTO) => {
       console.log(text, result);
       return result;
     })
@@ -43,7 +44,7 @@ const findByUsername = async (
 
   return await db
     .one(text, values)
-    .then((result: any) => {
+    .then((result: AccountDTO) => {
       console.log(text, result);
       return result;
     })

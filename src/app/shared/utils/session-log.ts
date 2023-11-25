@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
+import { PassportStatic } from 'passport';
 
 declare module 'express-session' {
   export interface SessionData {
-    passport: any;
+    passport: PassportStatic;
   }
 }
 

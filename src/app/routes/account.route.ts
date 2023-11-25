@@ -1,10 +1,21 @@
 import express from 'express';
+import passport from 'passport';
+
 import {
   findAll,
-  findAccount,
+  register,
+  login,
+  logout,
 } from '../controllers/account/account.controller';
 
 export const account = express.Router();
 
 account.get('/', findAll);
-account.post('/login', findAccount);
+
+const options = {
+  successMessage: 'login success',
+  failureMessage: 'login fail',
+};
+account.post('/login', passport.authenticate('local', options), login);
+account.post('/register', register);
+account.post('/logout', logout);

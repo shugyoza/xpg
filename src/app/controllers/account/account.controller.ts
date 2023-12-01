@@ -22,18 +22,22 @@ export const logout = (
 };
 
 export const register = async (
-  error: Error,
   request: Request,
   response: Response,
   next: NextFunction
 ) => {
-  const { email, username, role } = request.body;
+  // auto-create username initial value based on email address, i.e: a@b.c => a-b-c
+  const regex = /[@.]/gi;
+  const username = request.body.email.replace(regex, '-');
+  // auto create default initial value for role
+  const role = 'user';
+
   const query = {
     text:
       'INSERT INTO "' +
       tableName +
       '" (email, username, role, password) VALUES($1, $2, $3, $4) RETURNING id;',
-    values: [email, username, role],
+    values: [request.body.email, username, role],
   };
 
   try {
@@ -43,18 +47,16 @@ export const register = async (
     // a successful registration will get a response of the generated account id
     const result = await db.one(query);
 
-    if (!result) {
-      next(errorHandler(409, error.message || 'username and/or email exists'));
+    response.status(201).json(result);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    // if error due to email exists in database, return response
+    if (error.code === '23505') {
+      response.status(409).json(error);
+    } else {
+      // else just pass it to the error handler
+      next(error);
     }
-
-    response.status(201).json({
-      ok: true,
-      status: 'success',
-      message: 'account created',
-      result,
-    });
-  } catch (error) {
-    next(error);
   }
 };
 

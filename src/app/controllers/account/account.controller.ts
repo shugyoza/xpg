@@ -36,7 +36,7 @@ export const register = async (
     text:
       'INSERT INTO "' +
       tableName +
-      '" (email, username, role, password) VALUES($1, $2, $3, $4) RETURNING id;',
+      '" (email, username, role, password) VALUES($1, $2, $3, $4) RETURNING *;',
     values: [request.body.email, username, role],
   };
 
@@ -47,7 +47,12 @@ export const register = async (
     // a successful registration will get a response of the generated account id
     const result = await db.one(query);
 
-    response.status(201).json(result);
+    response.status(201).json({
+      id: result.id,
+      email: request.body.email,
+      username,
+      createdAt: result.createdAt,
+    });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     // if error due to email exists in database, return response

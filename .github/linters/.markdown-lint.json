@@ -1,5 +1,6 @@
 {
   "default": true,
   "no-hard-tabs": false,
-  "code_blocks": false
+  "code_blocks": false,
+  "ignore_code_languages": ["json", "js"]
 }

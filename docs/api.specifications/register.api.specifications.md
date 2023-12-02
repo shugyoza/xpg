@@ -68,7 +68,10 @@
 ```
 
 #### Fail: `400 Bad Request`
+<!-- textlint-disable -->
 - Front-end sent form with some invalid inputs
+P.S. Front-end is correct as adjective, Front end is correct as a noun, Frontend has never made it into dictionaries
+<!-- textlint-enable -->
 ```
 // response body
 {

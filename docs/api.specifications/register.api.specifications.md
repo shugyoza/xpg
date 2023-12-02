@@ -28,7 +28,7 @@
 
 ### Response
 
-#### Success: `201 Created`
+#### Success: "`201 Created`"
 ```
 // response body
 {
@@ -39,7 +39,7 @@
 }
 ```
 
-#### Fail: `409 Conflict`
+#### Fail: "`409 Conflict`"
 - Email has already been registered
 ```
 // response body
@@ -67,7 +67,7 @@
 }
 ```
 
-#### Fail: `400 Bad Request`
+#### Fail: "`400 Bad Request`"
 <!-- textlint-disable -->
 - Front-end sent form with some invalid inputs
 P.S. Front-end is correct as adjective, Front end is correct as a noun, Frontend has never made it into dictionaries

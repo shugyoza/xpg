@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
+import { validationResult } from 'express-validator';
 
 import accountModel from '../../db/account.model';
 import { db } from '../../../main';
@@ -26,9 +27,14 @@ export const register = async (
   response: Response,
   next: NextFunction
 ) => {
-  // auto-create username initial value based on email address, i.e: a@b.c => a-b-c
-  const regex = /[@.]/gi;
-  const username = request.body.email.replace(regex, '-');
+  const inputErrors = validationResult(request);
+  if (inputErrors) {
+    response.status(400).json(inputErrors);
+    return;
+  }
+
+  // auto-create username initial value based on email address
+  const username = request.body.email;
   // auto create default initial value for role
   const role = 'user';
 

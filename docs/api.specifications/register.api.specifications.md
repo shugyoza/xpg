@@ -3,17 +3,18 @@
 ## Request
 
 ### Request with valid inputs
+<!-- markdownlint-disable -->
 ```json
 // request headers
 {
-    "Content-Type": "application/json"
+  "Content-Type": "application/json"
 }
 ```
 ```json
 // request body
 {
-	"email": "username444@email.com",
-	"password": "Password123"
+  "email": "username444@email.com",
+  "password": "Password123"
 }
 ```
 
@@ -21,8 +22,8 @@
 ```json
 // request body
 {
-	"email": "username444",
-	"password": "Password123"	
+  "email": "username444",
+  "password": "Password123"	
 }
 ```
 
@@ -32,10 +33,10 @@
 ```json
 // response body
 {
-	"id": 60,
-	"email": "username444@email.com",
-	"username": "username444-email-com",
-	"createdAt": "2023-11-24T18:34:07.727Z"
+  "id": 60,
+  "email": "username444@email.com",
+  "username": "username444-email-com",
+  "createdAt": "2023-11-24T18:34:07.727Z"
 }
 ```
 
@@ -44,24 +45,24 @@
 ```json
 // response body
 {
-	"length": 222,
-	"name": "error",
-	"severity": "ERROR",
-	"code": "23505",
-	"detail": "Key (email)=(username444@email.com) already exists.",
-	"schema": "public",
-	"table": "Accounts",
-	"constraint": "Accounts_email_key",
-	"file": "nbtinsert.c",
-	"line": "671",
-	"routine": "_bt_check_unique",
-	"query": {
-		"text": "INSERT INTO \"Accounts\" (email, username, role, password) VALUES($1, $2, $3, $4) RETURNING *;",
-		"values": [
-			"username444@email.com",
-			"username444-email-com",
-			"user",
-			"$2b$10$smBwMyLWixaPrpTaCjG8O.FasIo2oD62o9dHF4zUz36HbnPWmiOri"
+  "length": 222,
+  "name": "error",
+  "severity": "ERROR",
+  "code": "23505",
+  "detail": "Key (email)=(username444@email.com) already exists.",
+  "schema": "public",
+  "table": "Accounts",
+  "constraint": "Accounts_email_key",
+  "file": "nbtinsert.c",
+  "line": "671",
+  "routine": "_bt_check_unique",
+  "query": {
+    "text": "INSERT INTO \"Accounts\" (email, username, role, password) VALUES($1, $2, $3, $4) RETURNING *;",
+    "values": [
+      "username444@email.com",
+      "username444-email-com",
+      "user",
+      "$2b$10$smBwMyLWixaPrpTaCjG8O.FasIo2oD62o9dHF4zUz36HbnPWmiOri"
 		]
 	}
 }
@@ -93,3 +94,4 @@ P.S. Front-end is correct as adjective, Front end is correct as a noun, Frontend
 	]
 }
 ```
+<!-- markdownlint-enable -->

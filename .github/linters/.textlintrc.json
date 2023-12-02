@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "terminology": {
+      "defaultTerms": true,
+      "exclude": ["code[- ]base(es)?", "front[- ]end(s)"]
+    }
+  }
+}
+

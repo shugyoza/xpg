@@ -1,8 +1,12 @@
-import { ErrorRequestHandler, Request, Response } from 'express';
+import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+
+interface _Error extends Error {
+  message: string;
+  statusCode: number;
+}
 
 export const errorHandler = (statusCode: number, message: string): Error => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const error = new Error() as any;
+  const error = new Error() as _Error;
   error.statusCode = statusCode;
   error.message = message;
 
@@ -10,17 +14,60 @@ export const errorHandler = (statusCode: number, message: string): Error => {
 };
 
 export const errorRequestHandler: ErrorRequestHandler = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  err: any,
+  error: _Error,
   _request: Request,
   response: Response
 ): void => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || 'Internal Server Error';
+  const statusCode = error.statusCode || 500;
+  const message = error.message || 'Internal Server Error';
 
   response.status(statusCode).json({
     statusCode,
     ok: false,
     message,
   });
+};
+
+export const logError = // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (error: any, _request: Request, _response: Response, next: NextFunction) => {
+    if (process.env.NODE_ENV === 'production') {
+      // TODO log the error to the database;
+    } else {
+      console.error(error);
+    }
+
+    next(error);
+  };
+
+export const unhandledRequestCatcher = (
+  _request: Request,
+  _response: Response,
+  next: NextFunction
+) => {
+  const error = new Error('Page Not Found') as _Error;
+  error.statusCode = 404;
+  next(error);
+};
+
+export const handle404Error = (
+  error: _Error,
+  _request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  if (error.statusCode === 404) {
+    response.status(404).json({ message: 'Page Not Found' });
+    return;
+  }
+
+  next(error);
+};
+
+export const handleRemainingErrors = (
+  error: _Error,
+  _request: Request,
+  response: Response
+) => {
+  const message = error.message || 'Internal Server Error';
+  response.status(error.statusCode || 500).json({ message });
 };

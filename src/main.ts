@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
 import passport from 'passport';
 import session from 'express-session';
 
@@ -8,6 +9,11 @@ import { initializeDB } from './app/db';
 import { account } from './app/routes/account.route';
 import { sessionLog } from './app/shared/utils/session-log';
 import { initializePassport } from './app/controllers/auth/passport.config';
+import {
+  logError,
+  handle404Error,
+  handleRemainingErrors,
+} from './app/shared/utils/error';
 
 dotenv.config();
 const hostname = '127.0.0.1';
@@ -18,9 +24,11 @@ initializePassport(passport);
 const server = express();
 const corsOptions = {
   origin: `http://localhost:${port}`,
+  // origin: '*', // if we want to accept request from any origin
 };
 
 server.use(cors(corsOptions));
+server.use(morgan('dev'));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
@@ -51,6 +59,10 @@ server.get('/', (_: Request, response: Response) => {
 });
 
 server.use(sessionLog);
+
+server.use(logError);
+server.use(handle404Error);
+server.use(handleRemainingErrors);
 
 export const db = initializeDB();
 

@@ -1,15 +1,15 @@
-## POST /api/v1/account/register
+# POST /api/v1/account/register
 
-### Request 
+## Request
 
-#### Request with valid inputs
-```
+### Request with valid inputs
+```json
 // request headers
 {
     "Content-Type": "application/json"
 }
 ```
-```
+```json
 // request body
 {
 	"email": "username444@email.com",
@@ -17,8 +17,8 @@
 }
 ```
 
-### Request with invalid inputs
-```
+## Request with invalid inputs
+```json
 // request body
 {
 	"email": "username444",
@@ -26,10 +26,10 @@
 }
 ```
 
-### Response
+## Response
 
-#### Success: "`201 Created`"
-```
+### Success: "`201 Created`"
+```json
 // response body
 {
 	"id": 60,
@@ -39,9 +39,9 @@
 }
 ```
 
-#### Fail: "`409 Conflict`"
+### Fail: "`409 Conflict`"
 - Email has already been registered
-```
+```json
 // response body
 {
 	"length": 222,
@@ -67,12 +67,12 @@
 }
 ```
 
-#### Fail: "`400 Bad Request`"
+### Fail: "`400 Bad Request`"
 <!-- textlint-disable -->
 - Front-end sent form with some invalid inputs
 P.S. Front-end is correct as adjective, Front end is correct as a noun, Frontend has never made it into dictionaries
 <!-- textlint-enable -->
-```
+```json
 // response body
 {
 	"errors": [

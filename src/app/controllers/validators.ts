@@ -10,7 +10,17 @@ const checkPassword = check('password')
   .matches(valid.password)
   .withMessage(errorMessages.password.pattern);
 
-export const loginValidators = [
+const checkUsername = check('username')
+  .exists({ checkFalsy: true })
+  .withMessage(`username: ${errorMessages.username.required}`)
+  .isLength(length.username)
+  .withMessage(
+    `Email address must be minimum ${length.username.min} and maximum ${length.username.max} characters long`
+  )
+  .matches(valid.username)
+  .withMessage(errorMessages.username.pattern);
+
+const login = [
   check('login')
     .exists({ checkFalsy: true })
     .withMessage(`email: ${errorMessages.email.required}`)
@@ -21,7 +31,7 @@ export const loginValidators = [
   checkPassword,
 ];
 
-export const accountValidators = [
+const register = [
   check('email')
     .exists({ checkFalsy: true })
     .withMessage(`email: ${errorMessages.email.required}`)
@@ -33,14 +43,10 @@ export const accountValidators = [
     .withMessage(errorMessages.email.pattern)
     .matches(valid.email)
     .withMessage(errorMessages.email.pattern),
-  check('username')
-    .exists({ checkFalsy: true })
-    .withMessage(`username: ${errorMessages.username.required}`)
-    .isLength(length.username)
-    .withMessage(
-      `Email address must be minimum ${length.username.min} and maximum ${length.username.max} characters long`
-    )
-    .matches(valid.username)
-    .withMessage(errorMessages.username.pattern),
   checkPassword,
 ];
+
+export const validators = {
+  login,
+  register,
+};

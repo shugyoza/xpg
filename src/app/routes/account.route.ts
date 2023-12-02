@@ -7,12 +7,12 @@ import {
   login,
   logout,
 } from '../controllers/account/account.controller';
-import { accountValidators, loginValidators } from '../controllers/validators';
+import { validators } from '../controllers/validators';
 
 export const account = express.Router();
 
 account.get('/', findAll);
-account.post('/register', accountValidators, register);
+account.post('/register', validators.register, register);
 
 const options = {
   successMessage: 'success',
@@ -20,7 +20,7 @@ const options = {
 };
 account.post(
   '/login',
-  loginValidators,
+  validators.login,
   passport.authenticate('local', options),
   login
 );

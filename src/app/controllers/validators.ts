@@ -10,6 +10,7 @@ const checkPassword = check('password')
   .matches(valid.password)
   .withMessage(errorMessages.password.pattern);
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const checkUsername = check('username')
   .exists({ checkFalsy: true })
   .withMessage(`username: ${errorMessages.username.required}`)

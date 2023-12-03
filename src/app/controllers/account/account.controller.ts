@@ -5,8 +5,8 @@ import { validationResult } from 'express-validator';
 import accountModel from '../../db/account.model';
 import { db } from '../../../main';
 import { errorHandler } from '../../shared/utils/error';
-import { AccountDTO } from './account.interface';
 import { tableName } from './account.constant';
+import { errorMessages } from '../constants';
 
 export const logout = (
   request: Request,
@@ -34,7 +34,8 @@ export const register = async (
   }
 
   // auto-create username initial value based on email address
-  const username = request.body.email;
+  const regex = /[@.]/gi; // remove
+  const username = request.body.email.replace(regex, '-'); // remove
   // auto create default initial value for role
   const role = 'user';
 
@@ -71,6 +72,51 @@ export const register = async (
   }
 };
 
+interface ExpressValidatorError {
+  type: string;
+  value: string;
+  msg: string;
+  path: string;
+  location: string;
+}
+
+export const evaluateLoginErrors = (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  const validation = validationResult(request);
+
+  const emailPatternError = validation['errors'].filter(
+    (error: ExpressValidatorError) =>
+      error.path === 'login' && error.msg === errorMessages.email.pattern
+  ).length;
+  const usernamePatternError = validation['errors'].filter(
+    (error: ExpressValidatorError) =>
+      error.path === 'login' && error.msg === errorMessages.username.pattern
+  ).length;
+
+  const emailLengthError = validation['errors'].filter(
+    (error: ExpressValidatorError) =>
+      error.path === 'login' && error.msg === errorMessages.email.isLength
+  ).length;
+  const usernameLengthError = validation['errors'].filter(
+    (error: ExpressValidatorError) =>
+      error.path === 'login' && error.msg === errorMessages.username.isLength
+  ).length;
+
+  // if not username pattern nor email pattern, nor does not meet both's valid length, return 400
+  if (
+    (emailPatternError && usernamePatternError) ||
+    (emailLengthError && usernameLengthError)
+  ) {
+    response.status(400).json(validation);
+    return;
+  }
+
+  next();
+};
+
 export const login = async (
   request: Request,
   response: Response,
@@ -83,21 +129,11 @@ export const login = async (
   }
 
   // else if login did not went through passport.authenticate
-  let account: AccountDTO;
-
   try {
-    // if login credential has '@', it is an email
-    if (request.body.login.includes('@')) {
-      account = await db.one(
-        'SELECT * FROM "' + tableName + '" WHERE EMAIL = $1;',
-        [request.body.login]
-      );
-    } else {
-      account = await db.one(
-        'SELECT * FROM "' + tableName + '" WHERE USERNAME = $1;',
-        [request.body.login]
-      );
-    }
+    const account = await db.one(
+      'SELECT * FROM "' + tableName + '" WHERE email = $1 OR username = $2;',
+      [request.body.login, request.body.login]
+    );
 
     if (!account) {
       next(errorHandler(404, 'Invalid login credentials'));

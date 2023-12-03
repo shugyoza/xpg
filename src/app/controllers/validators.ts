@@ -4,50 +4,46 @@ import { length, valid, errorMessages } from './constants';
 
 const checkPassword = check('password')
   .exists({ checkFalsy: true })
-  .withMessage(`password: ${errorMessages.username.required}`)
+  .withMessage(errorMessages.password.exists)
   .isLength(length.password)
-  .withMessage(errorMessages.password.minlength)
+  .withMessage(errorMessages.password.isLength)
   .matches(valid.password)
   .withMessage(errorMessages.password.pattern);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const checkUsername = check('username')
   .exists({ checkFalsy: true })
-  .withMessage(`username: ${errorMessages.username.required}`)
+  .withMessage(`username: ${errorMessages.username.exists}`)
   .isLength(length.username)
-  .withMessage(
-    `Email address must be minimum ${length.username.min} and maximum ${length.username.max} characters long`
-  )
+  .withMessage(errorMessages.username.isLength)
   .matches(valid.username)
   .withMessage(errorMessages.username.pattern);
 
-const login = [
-  check('login')
+export const loginValidators = [
+  check('login') // check for error as email
     .exists({ checkFalsy: true })
-    .withMessage(`email: ${errorMessages.email.required}`)
+    .withMessage(errorMessages.email.exists)
     .isLength(length.email)
-    .withMessage(
-      `login must be minimum ${length.email.min} and maximum ${length.email.max} characters long`
-    ),
+    .withMessage(errorMessages.email.isLength)
+    .isEmail()
+    .withMessage(errorMessages.email.pattern),
+  check('login') // check for error as username
+    .isLength(length.username)
+    .withMessage(errorMessages.username.isLength)
+    .matches(valid.username)
+    .withMessage(errorMessages.username.pattern),
   checkPassword,
 ];
 
-const register = [
+export const registerValidators = [
   check('email')
     .exists({ checkFalsy: true })
-    .withMessage(`email: ${errorMessages.email.required}`)
+    .withMessage(`email: ${errorMessages.email.exists}`)
     .isLength(length.email)
     .withMessage(
       `Email address must be minimum ${length.email.min} and maximum ${length.email.max} characters long`
     )
     .isEmail()
-    .withMessage(errorMessages.email.pattern)
-    .matches(valid.email)
     .withMessage(errorMessages.email.pattern),
   checkPassword,
 ];
-
-export const validators = {
-  login,
-  register,
-};

@@ -20,21 +20,12 @@ export const initializePassport = (passport: PassportStatic) => {
     _password: string,
     done: Done
   ) => {
-    let account: AccountDTO;
 
     try {
-      // if login credential has '@', it is an email
-      if (login.includes('@')) {
-        account = await db.one(
-          'SELECT * FROM "' + tableName + '" WHERE EMAIL = $1;',
-          [login]
-        );
-      } else {
-        account = await db.one(
-          'SELECT * FROM "' + tableName + '" WHERE USERNAME = $1;',
-          [login]
-        );
-      }
+      const account = await db.one(
+        'SELECT * FROM "' + tableName + '" WHERE email = $1 OR username = $2;',
+        [login, login]
+      );
 
       if (!account) {
         return done(null, false, { message: 'account not found' });

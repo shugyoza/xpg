@@ -4,15 +4,16 @@ import passport from 'passport';
 import {
   findAll,
   register,
+  evaluateLoginErrors,
   login,
   logout,
 } from '../controllers/account/account.controller';
-import { validators } from '../controllers/validators';
+import { registerValidators, loginValidators } from '../controllers/validators';
 
 export const account = express.Router();
 
 account.get('/', findAll);
-account.post('/register', validators.register, register);
+account.post('/register', registerValidators, register);
 
 const options = {
   successMessage: 'success',
@@ -20,7 +21,8 @@ const options = {
 };
 account.post(
   '/login',
-  validators.login,
+  loginValidators,
+  evaluateLoginErrors,
   passport.authenticate('local', options),
   login
 );

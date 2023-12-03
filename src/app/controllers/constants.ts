@@ -16,7 +16,8 @@ export const length = {
   },
 };
 
-export const valid = { // email validation handled by express-validator
+export const valid = {
+  // email validation handled by express-validator
   username: /^[a-z0-9][-a-z0-9_]*\$?$/, // username must be forced to lowercase, no one remembers casing & if we lowercased it, might cause confusion in login
   password: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
 };

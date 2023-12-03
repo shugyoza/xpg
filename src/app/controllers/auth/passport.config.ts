@@ -3,7 +3,6 @@ import * as PassportLocal from 'passport-local';
 import bcrypt from 'bcrypt';
 
 import { db } from '../../../main';
-import { AccountDTO } from '../account/account.interface';
 import { tableName } from '../account/account.constant';
 
 const LocalStrategy = PassportLocal.Strategy;
@@ -20,7 +19,6 @@ export const initializePassport = (passport: PassportStatic) => {
     _password: string,
     done: Done
   ) => {
-
     try {
       const account = await db.one(
         'SELECT * FROM "' + tableName + '" WHERE email = $1 OR username = $2;',

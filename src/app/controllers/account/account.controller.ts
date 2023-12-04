@@ -33,10 +33,10 @@ export const register = async (
     return;
   }
 
-  // auto-create username initial value based on email address
+  // auto-generate username initial value based on email address
   const regex = /[@.]/gi; // remove
-  const username = request.body.email.replace(regex, '-'); // remove
-  // auto create default initial value for role
+  const username = request.body.email.replace(regex, '-')
+  // auto-generate default initial value for role
   const role = 'user';
 
   const query = {
@@ -117,40 +117,9 @@ export const evaluateLoginErrors = (
   next();
 };
 
-export const login = async (
-  request: Request,
-  response: Response,
-  next: NextFunction
-) => {
-  // if passport.authenticate has authenticate account by passing it as request.user, return ok response;
+export const login = async (request: Request, response: Response) => {
   if (request.user) {
     response.status(200).json(request.user);
-    return;
-  }
-
-  // else if login did not went through passport.authenticate
-  try {
-    const account = await db.one(
-      'SELECT * FROM "' + tableName + '" WHERE email = $1 OR username = $2;',
-      [request.body.login, request.body.login]
-    );
-
-    if (!account) {
-      next(errorHandler(404, 'Invalid login credentials'));
-    }
-
-    const validated = await bcrypt.compare(
-      request.body.password,
-      account.password
-    );
-
-    if (!validated) {
-      next(errorHandler(401, 'Invalid login credentials..'));
-    }
-
-    response.status(200).json(account);
-  } catch (error) {
-    next(error);
   }
 };
 

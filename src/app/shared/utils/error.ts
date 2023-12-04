@@ -66,8 +66,15 @@ export const handle404Error = (
 export const handleRemainingErrors = (
   error: _Error,
   _request: Request,
-  response: Response
+  response: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _next: NextFunction
 ) => {
-  const message = error.message || 'Internal Server Error';
-  response.status(error.statusCode || 500).json({ message });
+  const statusCode = error.statusCode ? error.statusCode : 500;
+  const message = error.message ? error.message : 'Internal Server Error';
+  response.status(statusCode).json({ message });
+};
+
+export const queryResultErrorCode = {
+  noData: 0,
 };

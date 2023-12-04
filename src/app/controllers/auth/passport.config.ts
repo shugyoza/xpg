@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 
 import { db } from '../../../main';
 import { tableName } from '../account/account.constant';
+import { queryResultErrorCode } from '../../shared/utils/error';
 
 const LocalStrategy = PassportLocal.Strategy;
 
@@ -25,10 +26,6 @@ export const initializePassport = (passport: PassportStatic) => {
         [login, login]
       );
 
-      if (!account) {
-        return done(null, false, { message: 'account not found' });
-      }
-
       const validated = await bcrypt.compare(_password, account.password);
 
       if (!validated) {
@@ -39,7 +36,14 @@ export const initializePassport = (passport: PassportStatic) => {
       const { password = null, ...sanitized } = account;
 
       return done(null, sanitized);
-    } catch (error: unknown) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      // this block is here instead of in the try {} block as 'if (!account) {...}', because 
+      // db returns error when there is nothing to return out of the query
+      if (error.code === queryResultErrorCode.noData) {
+        return done(null, false, { message: 'account not found' });
+      }
+
       return done(error as Error);
     }
   };

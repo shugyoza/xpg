@@ -38,7 +38,7 @@ export const initializePassport = (passport: PassportStatic) => {
       return done(null, sanitized);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      // this block is here instead of in the try {} block as 'if (!account) {...}', because 
+      // this block is here instead of in the try {} block as 'if (!account) {...}', because
       // db returns error when there is nothing to return out of the query
       if (error.code === queryResultErrorCode.noData) {
         return done(null, false, { message: 'account not found' });

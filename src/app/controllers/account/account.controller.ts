@@ -35,7 +35,7 @@ export const register = async (
 
   // auto-generate username initial value based on email address
   const regex = /[@.]/gi; // remove
-  const username = request.body.email.replace(regex, '-')
+  const username = request.body.email.replace(regex, '-');
   // auto-generate default initial value for role
   const role = 'user';
 

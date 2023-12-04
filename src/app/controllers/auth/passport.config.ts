@@ -3,8 +3,8 @@ import * as PassportLocal from 'passport-local';
 import bcrypt from 'bcrypt';
 
 import { db } from '../../../main';
-import { AccountDTO } from '../account/account.interface';
 import { tableName } from '../account/account.constant';
+import { queryResultErrorCode } from '../../shared/utils/error';
 
 const LocalStrategy = PassportLocal.Strategy;
 
@@ -20,25 +20,11 @@ export const initializePassport = (passport: PassportStatic) => {
     _password: string,
     done: Done
   ) => {
-    let account: AccountDTO;
-
     try {
-      // if login credential has '@', it is an email
-      if (login.includes('@')) {
-        account = await db.one(
-          'SELECT * FROM "' + tableName + '" WHERE EMAIL = $1;',
-          [login]
-        );
-      } else {
-        account = await db.one(
-          'SELECT * FROM "' + tableName + '" WHERE USERNAME = $1;',
-          [login]
-        );
-      }
-
-      if (!account) {
-        return done(null, false, { message: 'account not found' });
-      }
+      const account = await db.one(
+        'SELECT * FROM "' + tableName + '" WHERE email = $1 OR username = $2;',
+        [login, login]
+      );
 
       const validated = await bcrypt.compare(_password, account.password);
 
@@ -50,7 +36,14 @@ export const initializePassport = (passport: PassportStatic) => {
       const { password = null, ...sanitized } = account;
 
       return done(null, sanitized);
-    } catch (error: unknown) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      // this block is here instead of in the try {} block as 'if (!account) {...}', because
+      // db returns error when there is nothing to return out of the query
+      if (error.code === queryResultErrorCode.noData) {
+        return done(null, false, { message: 'account not found' });
+      }
+
       return done(error as Error);
     }
   };

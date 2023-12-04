@@ -63,8 +63,8 @@
       "username444-email-com",
       "user",
       "$2b$10$smBwMyLWixaPrpTaCjG8O.FasIo2oD62o9dHF4zUz36HbnPWmiOri"
-		]
-	}
+    ]
+  }
 }
 ```
 
@@ -76,22 +76,22 @@ P.S. Front-end is correct as adjective, Front end is correct as a noun, Frontend
 ```json
 // response body
 {
-	"errors": [
-		{
-			"type": "field",
-			"value": "username444",
-			"msg": "Email format must be valid, e.g: \"ab.cd@email.com\"",
-			"path": "email",
-			"location": "body"
-		},
-		{
-			"type": "field",
-			"value": "username444",
-			"msg": "Email format must be valid, e.g: \"ab.cd@email.com\"",
-			"path": "email",
-			"location": "body"
-		}
-	]
+  "errors": [
+    {
+      "type": "field",
+      "value": "username444",
+      "msg": "Email format must be valid, e.g: \"ab.cd@email.com\"",
+      "path": "email",
+      "location": "body"
+    },
+    {
+      "type": "field",
+      "value": "username444",
+      "msg": "Email format must be valid, e.g: \"ab.cd@email.com\"",
+      "path": "email",
+      "location": "body"
+    }
+  ]
 }
 ```
 <!-- markdownlint-enable -->
